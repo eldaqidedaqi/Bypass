@@ -1,0 +1,9 @@
+TEAM_ID = 'TU_TEAM_ID'
+KEY_ID = 'TU_KEY_ID'
+PRIVATE_KEY_PATH = 'AuthKey_KEYID.p8'
+API_ISSUER = 'VENDOR_ID'
+MDM_SERVER_ID = "12345678-90ab-cdef-1234-567890abcdef"
+EMAIL_ACCOUNT = 'eldaqidedaqi@gmail.com'
+CREDENTIALS_PATH = 'credentials.json'
+IMAP_TOKEN_PATH = 'token_imap.json'
+SMTP_TOKEN_PATH = 'token_smtp.json'

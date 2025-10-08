@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Tickets de Activación</title>
+<h1>Tickets Recibidos</h1>
+{% if tickets %}
+{% for t in tickets %}
+<div style="border:1px solid #ccc; margin:10px; padding:10px;">
+<p><b>De:</b> {{ t.from }}<br><b>Asunto:</b> {{ t.subject }}</p>
+<pre>{{ t.body }}</pre>
+<form method="post" action="{{ url_for('main.ticket_action') }}">
+<input type="hidden" name="ticket_id" value="{{ t.id }}">
+<input type="hidden" name="device_serial" value="FFWH7GJNN736">
+<button name="action" value="approve" type="submit">Aprobar</button>
+<button name="action" value="reject" type="submit">Rechazar</button>
+</form>
+</div>
+{% endfor %}
+{% else %}
+<p>No hay tickets nuevos.</p>
+{% endif %}
+<a href="{{ url_for('main.index') }}">Volver</a>

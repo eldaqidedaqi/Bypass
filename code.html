@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RoboCopProject - Control Apple Devices</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  #terminosModal {
+    display: none;
+    background-color: #f2f2f2;
+    border: 1px solid #333;
+    padding: 15px;
+    margin-top: 15px;
+  }
+  button {
+    padding: 10px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  #status {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .hidden {
+    display: none;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  input[type="text"], input[type="password"] {
+    width: 250px;
+    padding: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>RoboCopProject - Gestión y Control de Dispositivos Apple</h1>
+
+<!-- Botón Ayuda y aceptación términos -->
+<section>
+  <h2>Ayuda y Aceptación Términos Legales</h2>
+  <button id="btnAyuda" title="Ayuda y aceptación de Términos Legales">🆘 🫂 Familia✓</button>
+
+  <div id="terminosModal">
+    <p>Por favor, acepta los <a href="terms.html" target="_blank">Términos Legales y Condiciones de uso Generales</a>.</p>
+    <button id="aceptarTerminos">⭐⭐⭐⭐⭐ Aceptar y Continuar</button>
+  </div>
+</section>
+
+<hr/>
+
+<!-- Control iPhone 11 desactivado -->
+<section>
+  <h2>Control iPhone 11 Desactivado</h2>
+  <p>Después de aceptar términos, podrá activar el dispositivo y realizar acciones.</p>
+  <button id="btnActivar" disabled>Activar iPhone 11</button>
+  <div id="status"></div>
+</section>
+
+<hr/>
+
+<!-- Formulario Login para Auto OAuth y Apple JWT -->
+<section>
+  <h2>Login para Autenticación Automática</h2>
+  <form id="loginForm">
+    <label for="username">Usuario:</label>
+    <input type="text" id="username" name="username" required placeholder="Alpine o alpine" />
+    
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required placeholder="root" />
+    
+    <button type="submit">Iniciar Sesión</button>
+  </form>
+  <div id="loginStatus"></div>
+</section>
+
+<script>
+// Mostrar modal términos y habilitar botón activar al aceptar
+document.getElementById('btnAyuda').addEventListener('click', () => {
+  document.getElementById('terminosModal').style.display = 'block';
+});
+
+document.getElementById('aceptarTerminos').addEventListener('click', () => {
+  document.getElementById('terminosModal').style.display = 'none';
+  document.getElementById('status').textContent = 'Términos aceptados. Ahora puede activar el iPhone 11.';
+  document.getElementById('btnActivar').disabled = false;
+});
+
+// Evento para activar iPhone 11
+document.getElementById('btnActivar').addEventListener('click', () => {
+  document.getElementById('status').textContent = 'Procesando activación...';
+  fetch('/activar-iphone', { method: 'POST' })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        document.getElementById('status').textContent = 'iPhone 11 activado y configurado correctamente.';
+      } else {
+        document.getElementById('status').textContent = 'Error en la activación: ' + data.message;
+      }
+    })
+    .catch(() => {
+      document.getElementById('status').textContent = 'Error de conexión con el servidor.';
+    });
+});
+
+// Login y auto aceptación OAuth y Apple JWT
+document.getElementById('loginForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const username = event.target.username.value;
+  const password = event.target.password.value;
+  document.getElementById('loginStatus').textContent = 'Iniciando sesión...';
+
+  fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        document.getElementById('loginStatus').textContent = data.message;
+      } else {
+        document.getElementById('loginStatus').textContent = 'Error: ' + data.message;
+      }
+    })
+    .catch(() => {
+      document.getElementById('loginStatus').textContent = 'Error de conexión con el servidor.';
+    });
+});
+</script>
+
+</body>
+</html>

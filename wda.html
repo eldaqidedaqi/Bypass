@@ -1,0 +1,27 @@
+<!doctype html>
+<title>Control WebDriverAgent</title>
+<h1>Control iPhone via WebDriverAgent</h1>
+<p>Estado dispositivo: <span id="deviceStatus">Cargando...</span></p>
+<button onclick="pressHome()">Presionar botón Home</button>
+<button onclick="activateDevice()">Activar (simulado)</button>
+<p id="result"></p>
+<a href="{{ url_for('main.index') }}">Volver</a>
+
+<script>
+async function fetchStatus() {
+    const response = await fetch('{{ url_for("wda.status") }}');
+    const data = await response.json();
+    document.getElementById('deviceStatus').innerText = data.status ? JSON.stringify(data.status) : data.error;
+}
+async function pressHome() {
+    const response = await fetch('{{ url_for("wda.home") }}', { method: 'POST' });
+    const data = await response.json();
+    document.getElementById('result').innerText = data.result || data.error;
+}
+async function activateDevice() {
+    const response = await fetch('{{ url_for("wda.activate") }}', { method: 'POST' });
+    const data = await response.json();
+    document.getElementById('result').innerText = data.result || data.error;
+}
+window.onload = fetchStatus;
+</script>

@@ -1,0 +1,19 @@
+<!doctype html>
+<title>RoboCop Control Panel</title>
+<h1>Dispositivos iPhone y Gestión de Tickets</h1>
+<a href="{{ url_for('wda.control') }}">Control WebDriverAgent</a> | <a href="{{ url_for('main.tickets') }}">Tickets de Activación</a>
+
+<h2>Dispositivos</h2>
+<form method="post" action="{{ url_for('main.activate') }}">
+    {% for idx, device in devices %}
+    <input type="radio" name="selected_device" value="{{ idx }}" required>
+    {{ device.name }} (Serial: {{ device.serial }}) - Estado: {{ device.status }}<br>
+    {% endfor %}
+    <br>
+    <input type="checkbox" id="terms" name="terms" value="accept" required>
+    <label for="terms">Acepto términos y privacidad</label><br><br>
+    <button type="submit">Activar / Desactivar</button>
+</form>
+{% if message %}
+<p><b>{{ message }}</b></p>
+{% endif %}
